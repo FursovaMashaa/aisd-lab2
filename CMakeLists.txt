@@ -18,7 +18,7 @@ if(MSVC)
 endif()
 
 
-add_library(matrix SHARED "list.cpp")
+add_library(matrix SHARED "include/list.cpp")
 target_include_directories(matrix PUBLIC "include")
 
 # Подключаем googletest
@@ -28,5 +28,5 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 # Объявляем тестs
-add_executable(tests "tests.cc")
+add_executable(tests "tests/tests.cc")
 target_link_libraries(tests matrix GTest::gtest_main)
