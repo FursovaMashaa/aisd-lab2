@@ -222,7 +222,29 @@ namespace St{
             }
         }
 
-        
+        void remove_duplicates() {
+            Node<T>* current = head;
+            while (current != nullptr) {
+                Node<T>* runner = current->next;
+                while (runner != nullptr) {
+                    if (current->data == runner->data) {
+                        Node<T>* duplicate = runner;
+                        runner = runner->next;
+                        if (duplicate->prev != nullptr) {
+                            duplicate->prev->next = duplicate->next;
+                        }
+                        if (duplicate->next != nullptr) {
+                            duplicate->next->prev = duplicate->prev;
+                        }
+                        delete duplicate;
+                    }
+                    else {
+                        runner = runner->next;
+                    }
+                }
+                current = current->next;
+            }
+        }
 
         T& operator[](int index) {
             Node<T>* current = head;

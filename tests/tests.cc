@@ -94,5 +94,26 @@ TEST(LinkedListTest, AssignmentOperator) {
     EXPECT_EQ(list2[2], 3);
 }
 
+TEST(LinkedListTest, RemoveDuplicates) {
+    LinkedList<Student> list;
+    Student s1("Doe", "John", 1, 80.5);
+    Student s2("Smith", "Jane", 2, 90.0);
+    Student s3("Doe", "John", 1, 80.5);
+    Student s4("Johnson", "David", 3, 75.2);
+    Student s5("Smith", "Jane", 2, 90.0);
 
+    list.push_tail(s1);
+    list.push_tail(s2);
+    list.push_tail(s3);
+    list.push_tail(s4);
+    list.push_tail(s5);
+
+    list.remove_duplicates();
+
+    // After removing duplicates, the list should contain only unique elements
+    
+    EXPECT_EQ(list[0], s1);
+    EXPECT_EQ(list[1], s2);
+    EXPECT_EQ(list[2], s4);
+}
 
