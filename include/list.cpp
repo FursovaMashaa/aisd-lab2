@@ -67,7 +67,7 @@ namespace St{
         Node<T>* get_head() const {
             return head;
         }
-        Node<T>* get_tail() const {
+        Node* get_tail() const {
             return tail;
         } 
 
@@ -130,8 +130,134 @@ namespace St{
             return head == nullptr;
         }
 
+        void push_head(const LinkedList& other)
+        {
+            Node<T>* otherCurrent = other.head;
+            LinkedList<T> temp;
+
+            while (otherCurrent != nullptr)
+            {
+                temp.push_head(otherCurrent->data);
+                otherCurrent = otherCurrent->next;
+            }
+
+            while (!temp.is_empty())
+            {
+                push_head(temp[0]);
+                temp.pop_head();
+            }
+        }
+
+
+        void pop_head()
+        {
+            if (head != nullptr)
+            {
+                Node<T>* temp = head;
+                head = head->next;
+                if (head != nullptr)
+                {
+                    head->prev = nullptr;
+                }
+                delete temp;
+            }
+        }
+
+        void pop_tail()
+        {
+            if (head != nullptr)
+            {
+                if (head->next == nullptr)
+                {
+                    delete head;
+                    head = nullptr;
+                }
+                else
+                {
+                    Node<T>* current = head;
+                    while (current->next != nullptr)
+                    {
+                        current = current->next;
+                    }
+                    if (current->prev != nullptr)
+                    {
+                        current->prev->next = nullptr;
+                    }
+                    delete current;
+                }
+            }
+        }
+
+        void delete_node(const T& value)
+        {
+            while (head != nullptr && head->data == value)
+            {
+                pop_head();
+            }
+
+            if (head != nullptr)
+            {
+                Node<T>* current = head;
+                while (current != nullptr)
+                {
+                    if (current->data == value)
+                    {
+                        if (current->prev != nullptr)
+                        {
+                            current->prev->next = current->next;
+                        }
+                        if (current->next != nullptr)
+                        {
+                            current->next->prev = current->prev;
+                        }
+                        Node<T>* temp = current;
+                        current = current->next;
+                        delete temp;
+                    }
+                    else
+                    {
+                        current = current->next;
+                    }
+                }
+            }
+        }
+
         
-        
+
+        T& operator[](int index) {
+            Node<T>* current = head;
+
+            for (int i = 0; i < index && current != nullptr; ++i) {
+                current = current->next;
+            }
+
+            if (current == nullptr) {
+                throw std::out_of_range("Index out of range");
+            }
+
+            return current->data;
+        }
+
+        void print() const
+        {
+            Node<T>* current = head;
+            while (current != nullptr)
+            {
+                std::cout << current->data << " ";
+                current = current->next;
+            }
+
+            std::cout << std::endl;
+
+            current = tail;
+            while (current != nullptr)
+            {
+                std::cout << current->data << " ";
+                current = current->prev;
+            }
+
+            std::cout << std::endl;
+        }
     };
 }
 
